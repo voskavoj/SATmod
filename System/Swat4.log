@@ -1,0 +1,62 @@
+Log: Log file open, 03/08/20 21:11:08
+Init: ----------------------------------------
+Init: SWAT VERSION NUMBER: 34688
+Init: ----------------------------------------
+Init: Compiled: May  6 2005 13:18:50
+Init: Command line:  
+Init: Base directory: C:\Program Files (x86)\VUGames\SWAT 4\Content\System\
+Init: Character set: Unicode
+Init: Found startup configuration: Startup.ini
+Init: Adding FilePath: ..\System;..\Content\Scenarios;..\Content\Maps;..\..\ContentExpansion\System;..\..\ContentExpansion\Scenarios;..\..\ContentExpansion\Maps;..\..\ContentExpansion\Movies;..\..\ContentExpansion\LocalizedContent;..\..\ContentExpansion\Sounds;..\..\ContentExpansion\CustomSkins;..\..\ContentExpansion\Test\Maps;..\..\Content\System;..\..\Content\Scenarios;..\..\Content\Maps;..\..\LocalizedContent;..\..\Content\Sounds;..\..\Content\Movies;..\..\Content\Test\Maps
+Log: Bound to Window.dll
+Log: Bound to Core.dll
+Log: Bound to Scripting.dll
+Log: Bound to Engine.dll
+Log: Bound to SwatAIAwareness.dll
+Log: Bound to ALAudio.dll
+Log: Bound to AICommon.dll
+Init: Object subsystem initialized
+Init: Computer: SIRMORDRAGPC
+Init: User: SirMordrag
+Init: CPU Page size=4096, Processors=2
+Init: CPU Detected: PentiumPro-class processor (GenuineIntel)
+Init: CPU Features: CMov FPU RDTSC PAE MMX SSE
+Init: CPU Speed=3005.311275 MHz
+Init: Memory total: Phys=4194303K Pagef=4194303K Virt=2097024K
+Init: Working set: 32000 / 159000
+Init: Physical Memory: 4095 MByte
+Init: D3D Device: Mem query DX7(3DDEVICE | LOCALVIDMEM | TEXTURE | VIDEOMEMORY) = 1057685504
+Init: D3D Device: Mem query DX7(LOCALVIDMEM | TEXTURE | VIDEOMEMORY) = 1057685504
+Init: D3D Device: Mem query DX7(OFFSCREENPLAIN | LOCALVIDMEM | VIDEOMEMORY) = 1057685504
+Init: D3D Device: Mem query WMIVideoMemory = 1073741824
+Init: D3D Device: Video memory on board: 1020 (MB)
+Log: [ALAUDIO] - Initializing ALAudio device
+Log: OS ID: 5
+Log: SetInitialConfiguration: D3D Device VendorID = 0x1002 DeviceID = 0x6759 DriverVersion.LowPart = 0x57C
+Log: Bound to SwatGame.dll
+Log: Bound to RWOSupport.dll
+Log: Bound to Tyrion.dll
+Log: Bound to GUI.dll
+Log: Bound to SwatAICommon.dll
+Log: Bound to Editor.dll
+Log: Bound to ScriptCompiler.dll
+Log: Bound to IGEffectsSystem.dll
+Log: Bound to IGSoundEffectsSubsystem.dll
+Critical: appError called:
+Critical: ERROR: GameEngine, native class size (512) does not match scripted class size (520)
+Critical: Windows GetLastError: Systém neme nalézt uvedenou cestu. (3)
+Exit: Executing UObject::StaticShutdownAfterError
+Critical: UClass::Serialize [(Class Engine.GameEngine)]
+Critical: LoadObject [(Class Engine.GameEngine 368548==368548/3364409 368383 166)]
+Critical: ULinkerLoad::Preload [(Class Engine.GameEngine)]
+Critical: PreLoadObjects
+Critical: UObject::EndLoad
+Critical: UObject::StaticLoadObject [(Core.Class SwatGame.perty Engine.Engine.C_SemiSolidWire NULL)]
+Critical: UObject::StaticLoadClass
+Critical: InitEngine
+Log: Exception handler: Flushing log file...
+Localization: No localization: Window.IDDIALOG_CrashBox.IDC_CrashBox (int)
+Exit: Exiting.
+Log: Waiting for file streaming thread to finish...
+Uninitialized: Name subsystem shut down
+Uninitialized: Log file closed, 03/08/20 21:11:17
