@@ -6,8 +6,8 @@ var private Timer respawnTimer;
 
 private function DecrementRespawnTimers()
 {
-    DecrementRespawnTimer( 0 );
-    DecrementRespawnTimer( 1 );
+    uDecrementRespawnTimer( 0 , 1);
+    uDecrementRespawnTimer( 1 , 1);
 }
 
 function Initialize()
@@ -72,6 +72,31 @@ function OnPlayerDied( PlayerController player, Controller killer )
 {
 	local SwatGamePlayerController swatVictim;
 	local NetPlayer np;
+	
+//uMOD begin
+	local Controller controller;
+	local SwatGamePlayerController uPlayer;
+	local int team;
+	local int uDeadPlayers;
+	local SwatGamePlayerController uKilledPlayer;
+	
+	uKilledPlayer = SwatGamePlayerController( player );
+	team = uKilledPlayer.SwatRepoPlayerItem.TeamID;
+	uDeadPlayers = 0;
+	
+	for (controller = level.controllerList; controller != none; controller = controller.nextController)
+    {
+        uPlayer = SwatGamePlayerController(controller);
+        if (uPlayer != none && uPlayer.SwatRepoPlayerItem.TeamID == team && uPlayer.IsDead())
+        {
+            uDeadPlayers++;
+        }
+    }
+	if(uDeadPlayers == 0)
+		uOnRespawnTimerAtZero(team, 1);
+//uMOD end
+
+	
 
 	swatVictim = SwatGamePlayerController(player);
 

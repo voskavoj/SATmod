@@ -4016,7 +4016,7 @@ state BattleRooming extends BaseSpectating
         UpdateRotation(DeltaTime, 1);
 
 		GetAxes(Rotation,X,Y,Z);
-		Acceleration = 80 * DeltaTime  * (aForward*X + aStrafe*Y + aUp*vect(0,0,1));
+		Acceleration = 1600 * DeltaTime  * (aForward*X + aStrafe*Y + aUp*vect(0,0,1));
 
         if ( bRun != 0 )
             BattleRoomZ = Clamp( BattleRoomZ + aLookUp*0.4*DeltaTime, Pawn.Location.Z, Pawn.Location.Z + 1000 );
@@ -5460,6 +5460,8 @@ function HandleWalking()
             if (LastMovingMode != Moving_Running)
                 TransitionToRunning(LastMovingMode);
         }
+		if(bPressedJump) //uMOD
+			ConsiderAddingAimError(AimPenalty_WalkToRun); //uMOD
     }
 }
 

@@ -113,19 +113,40 @@ function OnPawnArrested( Pawn Arrestee, Pawn Arrester )
     Super.OnPawnArrested( Arrestee, Arrester );
 }
 
-
+//uMOD
 function OnPlayerDied(PlayerController player, Controller killer)
 {
-    mplog( self$"---GameModeBS::OnPlayerDied(). player="$player$", killer="$killer );
-
-    Super.OnPlayerDied( player, killer );
+	local Controller controller;
+	local SwatGamePlayerController uPlayer;
+	local int team;
+	local int uDeadPlayers;
+	local SwatGamePlayerController uKilledPlayer;
+	
+	uKilledPlayer = SwatGamePlayerController( player );
+	team = uKilledPlayer.SwatRepoPlayerItem.TeamID;
+	uDeadPlayers = 0;
+	
+	for (controller = level.controllerList; controller != none; controller = controller.nextController)
+    {
+        uPlayer = SwatGamePlayerController(controller);
+        if (uPlayer != none && uPlayer.SwatRepoPlayerItem.TeamID == team && uPlayer.IsDead())
+        {
+            uDeadPlayers++;
+        }
+    }
+	if(uDeadPlayers == 0)
+		uOnRespawnTimerAtZero(team, 0);
+	
+	
+    mplog( self$"---GameModeBS::OnPlayerDied(). player="$player$", killer="$killer );//org
+    Super.OnPlayerDied( player, killer );//org
 }
 
 
 private function DecrementRespawnTimers()
 {
-    DecrementRespawnTimer( 0 );
-    DecrementRespawnTimer( 1 );
+    uDecrementRespawnTimer( 0 , 0 );
+    uDecrementRespawnTimer( 1 , 0 );
 }
 
 

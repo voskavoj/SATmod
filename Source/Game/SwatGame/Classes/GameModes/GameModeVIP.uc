@@ -207,7 +207,31 @@ function OnPlayerDied(PlayerController player, Controller killer)
     local NetTeam swatKillerTeam;
     local SwatPlayerReplicationInfo swatKillerInfo;
     local int TeamOfKiller;
-
+	
+	//uMOD begin
+	local Controller controller;
+	local SwatGamePlayerController uPlayer;
+	local int team;
+	local int uDeadPlayers;
+	local SwatGamePlayerController uKilledPlayer;
+	
+	uKilledPlayer = SwatGamePlayerController( player );
+	team = uKilledPlayer.SwatRepoPlayerItem.TeamID;
+	uDeadPlayers = 0;
+	
+	for (controller = level.controllerList; controller != none; controller = controller.nextController)
+    {
+        uPlayer = SwatGamePlayerController(controller);
+        if (uPlayer != none && uPlayer.SwatRepoPlayerItem.TeamID == team && uPlayer.IsDead())
+        {
+            uDeadPlayers++;
+        }
+    }
+	if(uDeadPlayers == 0)
+		uOnRespawnTimerAtZero(team, 2);
+	//uMOd end
+	
+	
     mplog( self$"---GameModeVIP::OnPlayerDied(). player="$player$", killer="$killer );
 
     Super.OnPlayerDied( player, killer );
@@ -378,8 +402,17 @@ private function HandleSWATWonRound( SwatPlayer VIPPlayer )
 private function DecrementRespawnTimers()
 {
     //mplog( self$"---GameModeVIP::DecrementRespawnTimers()." );
-    DecrementRespawnTimer( 0 );
-    DecrementRespawnTimer( 1 );
+	if( VIPArrestedCountdown < 180 && VIPArrestedCountdown > 0 ) //VIP Arrested
+	{
+		uDecrementRespawnTimer( 0 , 2 );
+		uDecrementRespawnTimer( 1 , 2 );
+	}
+	else		//VIP free
+	{
+		uDecrementRespawnTimer( 0 , 1 );
+		uDecrementRespawnTimer( 1 , 1 );
+	}
+    
 }
 
 
@@ -456,7 +489,7 @@ simulated event Destroyed()
 defaultproperties
 {
     VIPVestMaterial=Material'mp_OfficerTex.VIPvest'
-    DefaultVIPArrestedCountdown=120
+    DefaultVIPArrestedCountdown=180
     VIPArrestedTimerExpired=false
     bHasRoundEnded=false
 }

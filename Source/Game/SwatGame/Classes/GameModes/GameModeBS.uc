@@ -118,6 +118,30 @@ function OnPlayerDied(PlayerController player, Controller killer)
     local int SWATScore;
     local int SuspectsScore;
 
+	//uMOD begin
+	local Controller controller;
+	local SwatGamePlayerController uPlayer;
+	local int team;
+	local int uDeadPlayers;
+	local SwatGamePlayerController uKilledPlayer;
+	
+	uKilledPlayer = SwatGamePlayerController( player );
+	team = uKilledPlayer.SwatRepoPlayerItem.TeamID;
+	uDeadPlayers = 0;
+	
+	for (controller = level.controllerList; controller != none; controller = controller.nextController)
+    {
+        uPlayer = SwatGamePlayerController(controller);
+        if (uPlayer != none && uPlayer.SwatRepoPlayerItem.TeamID == team && uPlayer.IsDead())
+        {
+            uDeadPlayers++;
+        }
+    }
+	if(uDeadPlayers == 0)
+		uOnRespawnTimerAtZero(team, 3);
+//uMOD end
+
+
     mplog( self$"---GameModeBS::OnPlayerDied(). player="$player$", killer="$killer );
 
     Super.OnPlayerDied( player, killer );
@@ -250,8 +274,8 @@ private function bool IsTeamAllDead( SwatGamePlayerController playerWhoDied, int
 
 private function DecrementRespawnTimers()
 {
-    DecrementRespawnTimer( 0 );
-    DecrementRespawnTimer( 1 );
+    DecrementRespawnTimer(0);
+    DecrementRespawnTimer(1);
 }
 
 // MCJ: leave in

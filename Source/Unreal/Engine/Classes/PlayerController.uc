@@ -3406,7 +3406,9 @@ ignores SeePlayer, HearNoise, Bump;
 		if ( bDoubleJump && (bUpdating || Pawn.CanDoubleJump()) )
 			Pawn.DoDoubleJump(bUpdating);
         else if ( bPressedJump )
+		{
 			Pawn.DoJump(bUpdating);
+		}
 		if ( Pawn.Physics != PHYS_Falling )
 		{
 			OldCrouch = Pawn.bWantsToCrouch;
@@ -3439,7 +3441,7 @@ ignores SeePlayer, HearNoise, Bump;
 		GetAxes(Pawn.Rotation,X,Y,Z);
 
 		// Update acceleration.
-		NewAccel = aForward*X + aStrafe*Y; 
+		NewAccel = 20*aForward*X + 20*aStrafe*Y; 
 		NewAccel.Z = 0;
 		if ( VSize(NewAccel) < 1.0 )
 			NewAccel = vect(0,0,0);

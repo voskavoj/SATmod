@@ -31,6 +31,7 @@ var private Timer EndRoundSequenceTimer;
 var private bool NotifiedOneMinuteWarning;
 var private bool NotifiedTenSecondsWarning;
 
+
 // override in derived classes.
 function OnMissionStarted();
 
@@ -704,6 +705,40 @@ protected function DecrementRespawnTimer( int team )
     UpdatePlayerDeathFlags( team );
 }
 
+//uMOD
+protected function uDecrementRespawnTimer( int team, int uGameMode)
+{
+    //mplog( "---GameModeMPBase::DecrementRespawnTimer(). TeamID="$team );
+
+    // This function is expected never to be called on the client.
+    assert(role == ROLE_Authority);
+
+    // Only decrement & display the timer, and respawn players, if respawning
+    // is enabled.
+    if (IsRespawningEnabled())
+    {
+			respawnSecondsRemaining[team]--;
+
+
+		if (respawnSecondsRemaining[team] < 0)
+			respawnSecondsRemaining[team] = 0;
+
+        Teams[team].SetRespawnSecondsRemaining( respawnSecondsRemaining[team] );
+
+        DisplayRespawnTimer( team );
+
+        // When the remaining seconds falls to 0, stop the timer and respawn
+        // all dead players
+        if (respawnSecondsRemaining[team] <= 0)
+        {
+            uOnRespawnTimerAtZero( team, uGameMode );
+        }
+    }
+    
+    UpdatePlayerDeathFlags( team );
+}
+
+
 // The parameter is the team's index (0 or 1).
 protected function UpdatePlayerDeathFlags( int team )
 {
@@ -733,9 +768,50 @@ protected function OnRespawnTimerAtZero(int team)
 	// dbeswick: set respawn wave time
  	if (Level.GetEngine().EnableDevTools)
 	    mplog( "...setting respawn timer for team "$team$" to: "$DefaultRespawnSecondsRemaining + ServerSettings(Level.CurrentServerSettings).AdditionalRespawnTime);
-	    
-    respawnSecondsRemaining[team] = DefaultRespawnSecondsRemaining + ServerSettings(Level.CurrentServerSettings).AdditionalRespawnTime;
+	        
+	respawnSecondsRemaining[team] = DefaultRespawnSecondsRemaining + ServerSettings(Level.CurrentServerSettings).AdditionalRespawnTime;
 }
+
+//uMOD
+protected function uOnRespawnTimerAtZero(int team, int uGameMode)
+{
+	local int uRespawnTime;
+	
+ 	if (Level.GetEngine().EnableDevTools)
+	    mplog( "---GameModeMPBase::OnRespawnTimerAtZero(). TeamID="$team );
+
+    // By default, respawn the team's reinforcements, and cycle the respawn
+    // timer back to the default length.
+    RespawnReinforcements( team );
+
+	// dbeswick: set respawn wave time
+ 	if (Level.GetEngine().EnableDevTools)
+	    mplog( "...setting respawn timer for team "$team$" to: "$DefaultRespawnSecondsRemaining + ServerSettings(Level.CurrentServerSettings).AdditionalRespawnTime);
+	/*
+	if(uGameMode == 0 && team == 0)		 	//RD sw
+		uRespawnTime = 5;
+	else if (uGameMode == 1 && team == 1) 	//S&G su
+		uRespawnTime = 5;
+	else if (uGameMode == 2 && team == 0) 	//VIP sw
+		uRespawnTime = 5;
+	else if (uGameMode == 3) 				//BS all
+		uRespawnTime = 5;
+	else
+		uRespawnTime = 20;
+	*/
+	if(uGameMode == 0 && team == 0)		 	//RD sw
+		respawnSecondsRemaining[team] = 7;
+	else if (uGameMode == 1 && team == 1) 	//S&G su
+		respawnSecondsRemaining[team] = 7;
+	else if (uGameMode == 2 && team == 0) 	//VIP sw
+		respawnSecondsRemaining[team] = 7;
+	else if (uGameMode == 3) 				//BS all
+		respawnSecondsRemaining[team] = 7;
+	else									//defenders and BS
+		respawnSecondsRemaining[team] = 10 + ServerSettings(Level.CurrentServerSettings).AdditionalRespawnTime;
+	
+}
+
 
 // The parameter is the team's index (0 or 1).
 protected function DisplayRespawnTimer( int team )
@@ -938,7 +1014,7 @@ protected final function DestroyAllPawns()
 
 defaultproperties
 {
-    DefaultRespawnSecondsRemaining = 30
+    DefaultRespawnSecondsRemaining = 10
     NotifiedOneMinuteWarning = false
     NotifiedTenSecondsWarning = false
 }

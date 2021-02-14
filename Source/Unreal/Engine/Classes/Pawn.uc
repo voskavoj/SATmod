@@ -2275,7 +2275,7 @@ function TakeDrowningDamage();
 
 function bool CheckWaterJump(out vector WallNormal)
 {
-#if !IG_SWAT // ckline: disable jumping
+#if IG_SWAT // ckline: disable jumping
 	local actor HitActor;
 	local vector HitLocation, HitNormal, checkpoint, start, checkNorm, Extent;
 
@@ -2311,7 +2311,7 @@ function bool Dodge(eDoubleClickDir DoubleClickMove)
 //Player Jumped
 function bool DoJump( bool bUpdating )
 {
-#if !IG_SWAT // ckline: disable jumping
+#if IG_SWAT // ckline: disable jumping //uMOD
 	if ( !bIsCrouched && !bWantsToCrouch && ((Physics == PHYS_Walking) || 
                                              (Physics == PHYS_Spider)) )
 	{
@@ -2322,6 +2322,7 @@ function bool DoJump( bool bUpdating )
 			if ( bCountJumps && (Inventory != None) )
 				Inventory.OwnerEvent('Jumped');
 		}
+		
 		if ( Physics == PHYS_Spider )
 			Velocity = JumpZ * Floor;
 		else if ( bIsWalking )
@@ -2330,12 +2331,14 @@ function bool DoJump( bool bUpdating )
 			Velocity.Z = JumpZ;
 		if ( (Base != None) && !Base.bWorldGeometry )
 			Velocity.Z += Base.Velocity.Z; 
+		
 		SetPhysics(PHYS_Falling);
         return true;
 	}
 #endif
     return false;
 }
+
 
 /* PlayMoverHitSound()
 Mover Hit me, play appropriate sound if any
@@ -2969,7 +2972,7 @@ defaultproperties
      AirSpeed=+00600.000000
      WaterSpeed=+00300.000000
      AccelRate=+02048.000000
-     JumpZ=+00420.000000
+     JumpZ=+00500.000000
 	 MaxFallSpeed=+1200.0
 	 DrawType=DT_Mesh
 	 bLOSHearing=true
