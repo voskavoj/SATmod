@@ -152,6 +152,8 @@ var config private float LeanHorizontalDistance;
 var bool		bCrawler;			// crawling - pitch and roll based on surface pawn is on
 var const bool	bReducedSpeed;		// used by movement natives
 var bool		bJumpCapable;
+var bool		bSprint;			// uMOD sprint
+var bool		bSprintAllowed;		//uMOD sprint
 var	bool		bCanJump;			// movement capabilities - used by AI
 var	bool 		bCanWalk;
 var	bool		bCanSwim;
@@ -2325,15 +2327,21 @@ function bool DoJump( bool bUpdating )
 		
 		if ( Physics == PHYS_Spider )
 			Velocity = JumpZ * Floor;
-		else if ( bIsWalking )
+		else if (!bIsWalking && bSprintAllowed) //uMOD sprint
+		{
+			bSprint = !bSprint;
+		}
+		else if(bIsWalking)
+		{
 			Velocity.Z = Default.JumpZ;
-		else
-			Velocity.Z = JumpZ;
+			bSprint = false;
+		}
+			
 		if ( (Base != None) && !Base.bWorldGeometry )
 			Velocity.Z += Base.Velocity.Z; 
 		
 		SetPhysics(PHYS_Falling);
-        return true;
+		return true;
 	}
 #endif
     return false;
@@ -2953,6 +2961,13 @@ simulated event bool ShouldPlayWalkingAnimations()
 }
 #endif
 
+simulated event bool ShouldSprint() //uMOD sprint
+{
+	if(bIsCrouched || bIsWalking || bWantsToCrouch)
+		return false;
+	else
+		return bSprint;
+}
 defaultproperties
 {
 	bCanBeDamaged=true
@@ -2962,6 +2977,8 @@ defaultproperties
 	 bCanWalk=true
 	 bCanSwim=false
 	 bCanFly=false
+	 bSprint=false 
+	 bSprintAllowed=true
 	 bUpdateSimulatedPosition=true
 	 BaseEyeHeight=+00064.000000
 	 CrouchEyeHeight=+00032.00000

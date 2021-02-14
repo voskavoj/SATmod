@@ -1117,7 +1117,7 @@ exec function Fire()
         InitiateViewportUse( IControllableViewport(ActiveItem) );
     }
     else if ( Level.NetMode == NM_Standalone
-              || (!SwatPlayer.IsNonlethaled() && !SwatPlayer.IsArrested()) )
+              || (!SwatPlayer.IsNonlethaled() && !SwatPlayer.IsArrested() && !SwatPlayer.CanSprint()) ) //uMOD sprint
     {
         Super.Fire();
     }
@@ -5461,7 +5461,7 @@ function HandleWalking()
                 TransitionToRunning(LastMovingMode);
         }
 		if(bPressedJump) //uMOD
-			ConsiderAddingAimError(AimPenalty_WalkToRun); //uMOD
+			ConsiderAddingAimError(AimPenalty_Equip); //uMOD
     }
 }
 

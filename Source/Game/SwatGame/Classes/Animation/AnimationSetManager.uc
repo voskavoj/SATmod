@@ -10,6 +10,7 @@ enum EAnimationSet
 	kAnimationSetNull,
 
     kAnimationSetDynamicStanding,
+	kAnimationSetDynamicStandingSprint, //uMOD sprint
 	kAnimationSetDynamicStandingNoArmor,
 	kAnimationSetDynamicStandingHeavyArmor,
 	kAnimationSetDynamicStandingUpStairs,
@@ -173,6 +174,7 @@ overloaded function Construct()
 
     // Movement Sets
     CreateSet(kAnimationSetDynamicStanding,							"AnimationSetDynamicStanding");
+	CreateSet(kAnimationSetDynamicStandingSprint,					"AnimationSetDynamicStandingSprint"); //uMOD sprint
 	CreateSet(kAnimationSetDynamicStandingNoArmor,					"AnimationSetDynamicStandingNoArmor");
 	CreateSet(kAnimationSetDynamicStandingHeavyArmor,				"AnimationSetDynamicStandingHeavyArmor");
 	CreateSet(kAnimationSetDynamicStandingUpStairs,					"AnimationSetDynamicStandingUpStairs");

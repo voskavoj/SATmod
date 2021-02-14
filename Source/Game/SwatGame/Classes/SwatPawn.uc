@@ -431,6 +431,7 @@ simulated function EAnimationSet GetStandingWalkAnimSet()					{ return kAnimatio
 simulated function EAnimationSet GetStandingWalkUpStairsAnimSet()			{ return kAnimationSetStealthStandingUpStairs; }
 simulated function EAnimationSet GetStandingWalkDownStairsAnimSet()			{ return kAnimationSetStealthStandingDownStairs; }
 simulated function EAnimationSet GetStandingRunAnimSet()					{ return kAnimationSetDynamicStanding; }
+simulated function EAnimationSet GetStandingRunSprintAnimSet()				{ return kAnimationSetDynamicStandingSprint; } //uMOD sprint
 simulated function EAnimationSet GetStandingRunUpStairsAnimSet()			{ return kAnimationSetDynamicStandingUpStairs; }
 simulated function EAnimationSet GetStandingRunDownStairsAnimSet()			{ return kAnimationSetDynamicStandingDownStairs; }
 simulated function EAnimationSet GetCrouchingAnimSet()						{ return kAnimationSetCrouching; }
@@ -501,6 +502,10 @@ simulated function EAnimationSet GetMovementAnimSet()
 				return GetStandingWalkAnimSet();
 			}
         }
+		else if (ShouldSprint() ) //uMOD sprint
+		{
+			return GetStandingRunSprintAnimSet();
+		}
         else
         {
 			if (bIsOnStairs)
@@ -1887,6 +1892,15 @@ simulated function OnFireModeChanged()
 simulated function OnMeshChanged()
 {
     InitAnimationForCurrentMesh();
+}
+
+//uMOD sprint
+simulated function bool canSprint()
+{
+	if(IsNonlethaled() || IsArrested() || ShouldPlayWalkingAnimations() || bIsCrouched)
+		return false;
+	else
+		return ShouldSprint();
 }
 
 simulated function UpdateHUDFireMode()

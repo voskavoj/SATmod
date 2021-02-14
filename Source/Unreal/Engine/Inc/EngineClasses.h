@@ -266,6 +266,7 @@ AUTOGENERATE_NAME(ShouldCheckClientCDKeys)
 AUTOGENERATE_NAME(ShouldControlViewport)
 AUTOGENERATE_NAME(ShouldPlayWalkingAnimations)
 AUTOGENERATE_NAME(ShouldShowSubtitles)
+AUTOGENERATE_NAME(ShouldSprint)
 AUTOGENERATE_NAME(ShowUpgradeMenu)
 AUTOGENERATE_NAME(SoakStop)
 AUTOGENERATE_NAME(SpecialCost)
@@ -1880,6 +1881,11 @@ enum ELeanState
 // Constant kMinRetestPathReachabilityDelta is declared in "..\Engine\Classes\Pawn.uc"
 #define UCONST_kMinRetestPathReachabilityDelta 0.25
 
+// "event"	function whose parameters correspond to	"struct APawn_eventShouldSprint_Parms"	is declared	in "..\Engine\Classes\Pawn.uc"
+struct APawn_eventShouldSprint_Parms
+{
+	  BITFIELD ReturnValue;
+};
 // "event"	function whose parameters correspond to	"struct APawn_eventShouldPlayWalkingAnimations_Parms"	is declared	in "..\Engine\Classes\Pawn.uc"
 struct APawn_eventShouldPlayWalkingAnimations_Parms
 {
@@ -6979,6 +6985,8 @@ public:
     BITFIELD bForceCrouch:1;
     BITFIELD bWantsToLeanLeft:1;
     BITFIELD bWantsToLeanRight:1;
+    class ATimer* sprintTimer;
+    INT sprintCountdown;
     BYTE DesiredLeanState;
     BYTE LeanState;
     INT LeanLockedYaw;
@@ -6988,6 +6996,8 @@ public:
     BITFIELD bCrawler:1;
     BITFIELD bReducedSpeed:1;
     BITFIELD bJumpCapable:1;
+    BITFIELD bSprint:1;
+    BITFIELD bSprintAllowed:1;
     BITFIELD bCanJump:1;
     BITFIELD bCanWalk:1;
     BITFIELD bCanSwim:1;
@@ -7182,6 +7192,13 @@ public:
 	   DECLARE_FUNCTION(execCanSee);
 	   DECLARE_FUNCTION(execRemovePawn);
 	   DECLARE_FUNCTION(execAddPawn);
+	  BITFIELD	eventShouldSprint()
+	  {
+        APawn_eventShouldSprint_Parms Parms;
+		   Parms.ReturnValue=0;
+        ProcessEvent(FindFunctionChecked(ENGINE_ShouldSprint),&Parms);
+		   return Parms.ReturnValue;
+	  }
 	  BITFIELD	eventShouldPlayWalkingAnimations()
 	  {
         APawn_eventShouldPlayWalkingAnimations_Parms Parms;
