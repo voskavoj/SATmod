@@ -2173,11 +2173,11 @@ simulated private function InternalEquipSlot(coerce EquipmentSlot Slot)
     // process of prepping or throwing a grenade.
     if ( SwatPlayer.IsInProcessOfThrowing() )
         return;
-
+/* //uMOD smash
 	// We can't equip anything except a secondary weapon if we have the smash and grab case
 	if (Slot != SLOT_SecondaryWeapon && NetPlayer(SwatPlayer) != None && NetPlayer(SwatPlayer).HasTheItem())
 		return;
-
+*/
     PendingItem = SwatPlayer.GetPendingItem();
     if ( PendingItem != None && PendingItem.GetSlot() == Slot)
         return;     //already in the process of equipping that

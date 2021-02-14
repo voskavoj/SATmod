@@ -971,7 +971,7 @@ function OnTeamChanging(TeamInfo NewTeam)
 simulated protected function bool CheckDesiredItemAndEquipIfNeeded()
 {
 	// We can't equip anything except a secondary weapon if we have the smash and grab case
-	if (GetDesiredItemPocket() != POCKET_SecondaryWeapon && HasTheItem())
+	if (GetDesiredItemPocket() == POCKET_PrimaryWeapon && HasTheItem()) //uMOD smash (Primary)
 		SetDesiredItemPocket(POCKET_SecondaryWeapon);
 
 	return Super.CheckDesiredItemAndEquipIfNeeded();
