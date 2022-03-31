@@ -1,0 +1,6 @@
+# exclude .gitignore and similar
+.git*           export-ignore
+# exclude CI configurations (useless outside the repo)
+Resources	export-ignore
+Source		export-ignore
+compileSAT.bat	export-ignore
